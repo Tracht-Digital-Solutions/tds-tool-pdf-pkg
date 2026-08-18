@@ -1,0 +1,13 @@
+---
+import ImagesToPdf from "../islands/ImagesToPdf.tsx";
+
+interface Props {
+  lang?: "de" | "en";
+}
+
+const { lang = "de" } = Astro.props;
+---
+
+<div class="tool tool--images-to-pdf">
+  <ImagesToPdf client:load lang={lang} />
+</div>

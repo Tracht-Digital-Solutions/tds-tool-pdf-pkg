@@ -1,0 +1,13 @@
+---
+import PdfCompress from "../islands/PdfCompress.tsx";
+
+interface Props {
+  lang?: "de" | "en";
+}
+
+const { lang = "de" } = Astro.props;
+---
+
+<div class="tool tool--pdf-compress">
+  <PdfCompress client:load lang={lang} />
+</div>

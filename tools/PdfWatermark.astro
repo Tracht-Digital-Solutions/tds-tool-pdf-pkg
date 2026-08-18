@@ -1,0 +1,13 @@
+---
+import PdfWatermark from "../islands/PdfWatermark.tsx";
+
+interface Props {
+  lang?: "de" | "en";
+}
+
+const { lang = "de" } = Astro.props;
+---
+
+<div class="tool tool--pdf-watermark">
+  <PdfWatermark client:load lang={lang} />
+</div>
