@@ -1,6 +1,6 @@
 {
   "name": "@tracht-digital-solutions/tds-tool-pdf",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "PDF tool package for the TDS tools platform (tds-tools): compress, watermark, images-to-PDF and PDF-to-images — all premium, all fully client-side.",
   "license": "UNLICENSED",
   "private": false,
