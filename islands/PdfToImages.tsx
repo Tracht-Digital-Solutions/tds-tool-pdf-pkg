@@ -31,6 +31,8 @@ interface Strings {
   download: string;
   downloadAll: string;
   pageLabel: (n: number) => string;
+  /** Download filename stem — translated, because the file lands on a desk. */
+  pageFile: (n: number) => string;
   note: string;
 }
 
@@ -56,6 +58,7 @@ const STRINGS = {
     download: "Herunterladen",
     downloadAll: "Alle herunterladen",
     pageLabel: (n) => `Seite ${n}`,
+    pageFile: (n) => `seite-${n}`,
     note: "Das PDF wird lokal im Browser gelesen und niemals hochgeladen.",
   },
   en: {
@@ -78,6 +81,7 @@ const STRINGS = {
     download: "Download",
     downloadAll: "Download all",
     pageLabel: (n) => `Page ${n}`,
+    pageFile: (n) => `page-${n}`,
     note: "The PDF is read locally in your browser and is never uploaded.",
   },
 } satisfies Record<Lang, Strings>;
@@ -182,7 +186,9 @@ export default function PdfToImages({ lang = "de" }: Props) {
   };
 
   const extension = format === "image/png" ? "png" : "jpg";
-  const saveOne = (p: Rendered) => downloadBlob(p.blob, `seite-${p.page}.${extension}`);
+  // The filename followed the code, not the page: an English visitor got
+  // "seite-1.png". Everything else on this island was already translated.
+  const saveOne = (p: Rendered) => downloadBlob(p.blob, `${t.pageFile(p.page)}.${extension}`);
 
   // Geometry/border/padding from the shared primitive; the pack ships no CSS.
   const field = "field-boxed w-full";
@@ -255,7 +261,7 @@ export default function PdfToImages({ lang = "de" }: Props) {
         {busy && progress ? t.working(progress.done, progress.total) : t.run}
       </button>
 
-      {error && <p className="status-pill status-pill--danger text-sm">{error}</p>}
+      {error && <p className="status-pill status-pill--danger text-sm" role="alert">{error}</p>}
       {status && <p className="status-pill status-pill--success text-sm">{status}</p>}
 
       {pages.length > 0 && (

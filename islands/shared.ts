@@ -116,3 +116,19 @@ export async function reencode(
   if (!blob) return null;
   return { blob, width, height };
 }
+
+/**
+ * The 14 standard PDF fonts are encoded WinAnsi, which covers German but not,
+ * say, an em dash typed on a Mac or a stray emoji. An unencodable character
+ * makes pdf-lib throw at draw time, which would surface as "could not be
+ * processed" for what is really one bad character — so they are dropped here.
+ */
+export function toWinAnsi(text: string): string {
+  return text
+    .replace(/[‘’‚‹›]/g, "'")
+    .replace(/[“”„]/g, '"')
+    .replace(/[–—]/g, "-")
+    .replace(/…/g, "...")
+    // eslint-disable-next-line no-control-regex
+    .replace(/[^\u0000-\u00FF]/g, "");
+}

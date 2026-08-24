@@ -65,9 +65,9 @@ jobs:
         run: npm run lint:primitives
 
       - name: Test
-        # The four older tool packs never run their suites in CI, so their
-        # regression tests gate nothing. These packs carry real binary logic
-        # (pdf-lib, pdfjs, OCR), so the suite is a build gate here.
+        # Every tool pack gates on its suite now (the four older packs were
+        # brought in line 2026-08-24). This one carries real binary logic
+        # (pdf-lib, pdfjs), so the suite matters most here.
         run: npm run test:run
 
       - name: Build
