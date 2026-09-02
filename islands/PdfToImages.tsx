@@ -261,8 +261,8 @@ export default function PdfToImages({ lang = "de" }: Props) {
         {busy && progress ? t.working(progress.done, progress.total) : t.run}
       </button>
 
-      {error && <p className="status-pill status-pill--danger text-sm" role="alert">{error}</p>}
-      {status && <p className="status-pill status-pill--success text-sm">{status}</p>}
+      {error && <p className="tds-alert tds-alert--danger" role="alert">{error}</p>}
+      {status && <p className="tds-alert tds-alert--success">{status}</p>}
 
       {pages.length > 0 && (
         <div className="space-y-4">
