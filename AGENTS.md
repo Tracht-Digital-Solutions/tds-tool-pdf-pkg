@@ -127,3 +127,10 @@ the test DOM, not of the tools.
 Push to `main` auto-releases a patch to GitHub Packages `@latest` and dispatches
 a rebuild of `tds-tools-frontend`. The manual button is for a minor/major bump.
 Use `[skip ci]` in a commit message to skip both.
+- **`tds-appear` belongs to `tds-shared`, not to this pack.** The class fades a
+  result into place the moment it is INSERTED — no script, no runtime, which is
+  the only kind of motion a public tool may carry. Two consequences: the CSS
+  arrives with the site's `tds-shared` (>=0.38.8), so the class does nothing in
+  a site pinned lower; and an element that merely changes its text does not
+  re-animate, so a permanent output box needs a `key` on the value to be
+  re-inserted.

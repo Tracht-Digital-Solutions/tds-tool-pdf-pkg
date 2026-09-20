@@ -261,11 +261,14 @@ export default function PdfToImages({ lang = "de" }: Props) {
         {busy && progress ? t.working(progress.done, progress.total) : t.run}
       </button>
 
-      {error && <p className="tds-alert tds-alert--danger" role="alert">{error}</p>}
-      {status && <p className="tds-alert tds-alert--success">{status}</p>}
+      {error && <p className="tds-alert tds-alert--danger tds-appear" role="alert">{error}</p>}
+      {status && <p className="tds-alert tds-alert--success tds-appear">{status}</p>}
 
       {pages.length > 0 && (
-        <div className="space-y-4">
+        // tds-appear (tds-shared): the rendered pages fade in as the block is
+        // inserted — once per conversion, not per page, so a 40-page PDF does
+        // not flicker. CSS only; a public tool ships no animation runtime.
+        <div className="space-y-4 tds-appear">
           <button
             type="button"
             className="btn btn-ghost"
