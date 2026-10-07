@@ -20,7 +20,7 @@ npm run lint:primitives         # fails on a control without a shared class
 
 ## Hard rules
 
-- **Every push to `main` publishes a `@latest` patch** and rebuilds `tds-tools-frontend`.
+- **Every push to `main` publishes a `@latest` patch** and deploys `tds-tools-frontend` (dispatches its `release.yml`).
   The manual release button is for minor/major. `[skip ci]` skips both; use it for docs-only commits.
 - Merge/split/rotate (`pdf-werkzeuge`) lives in `tds-tool-media-pkg`. Never duplicate it here.
 - The compressor only re-encodes JPEGs (`/DCTDecode`). After re-encoding, rewrite the whole image dictionary.
