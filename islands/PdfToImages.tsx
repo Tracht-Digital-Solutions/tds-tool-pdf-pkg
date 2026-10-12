@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { downloadBlob, parseRange, formatBytes, type Lang } from "./shared";
+import { FileDropZone } from "@tracht-digital-solutions/tds-shared/dropzone";
 
 type Format = "image/png" | "image/jpeg";
 
@@ -18,6 +19,8 @@ interface Strings {
   tooMany: (max: number) => string;
   done: (n: number) => string;
   choosePdf: string;
+  dropHint: string;
+  dropActive: string;
   pages: string;
   pagesHint: string;
   format: string;
@@ -45,6 +48,8 @@ const STRINGS = {
     tooMany: (max) => `Es werden höchstens ${max} Seiten auf einmal umgewandelt.`,
     done: (n) => `${n} Seite(n) umgewandelt.`,
     choosePdf: "PDF auswählen",
+    dropHint: "oder hierher ziehen",
+    dropActive: "Loslassen zum Hinzufügen",
     pages: "Seiten",
     pagesHint: "Leer lassen für alle Seiten, sonst z. B. 1-3,5",
     format: "Format",
@@ -68,6 +73,8 @@ const STRINGS = {
     tooMany: (max) => `At most ${max} pages are converted at a time.`,
     done: (n) => `Converted ${n} page(s).`,
     choosePdf: "Choose a PDF",
+    dropHint: "or drag it here",
+    dropActive: "Release to add",
     pages: "Pages",
     pagesHint: "Leave empty for every page, otherwise e.g. 1-3,5",
     format: "Format",
@@ -195,15 +202,13 @@ export default function PdfToImages({ lang = "de" }: Props) {
 
   return (
     <div className="pdf-to-images space-y-5">
-      <label className="block text-sm">
-        <span className="mb-1 block opacity-80">{t.choosePdf}</span>
-        <input
-          type="file"
-          accept="application/pdf"
-          className={field}
-          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-        />
-      </label>
+      <FileDropZone
+        label={t.choosePdf}
+        hint={t.dropHint}
+        activeLabel={t.dropActive}
+        accept="application/pdf"
+        onFiles={(files) => setFile(files[0] ?? null)}
+      />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm">

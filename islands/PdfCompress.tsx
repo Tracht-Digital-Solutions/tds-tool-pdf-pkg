@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { PDFDocument, PDFName, PDFNumber, PDFRawStream } from "pdf-lib";
 import { downloadPdf, formatBytes, reencode, type Lang } from "./shared";
+import { FileDropZone } from "@tracht-digital-solutions/tds-shared/dropzone";
 
 interface Strings {
   needOne: string;
   failed: string;
   nothingToDo: string;
   choosePdf: string;
+  dropHint: string;
+  dropActive: string;
   quality: string;
   maxWidth: string;
   keepSize: string;
@@ -26,6 +29,8 @@ const STRINGS = {
     nothingToDo:
       "In diesem PDF ließ sich nichts verkleinern — es enthält keine neu berechenbaren Bilder. Das ist bei reinen Textdokumenten normal.",
     choosePdf: "PDF auswählen",
+    dropHint: "oder hierher ziehen",
+    dropActive: "Loslassen zum Hinzufügen",
     quality: "Bildqualität",
     maxWidth: "Bilder höchstens breit (Pixel)",
     keepSize: "Größe beibehalten",
@@ -44,6 +49,8 @@ const STRINGS = {
     nothingToDo:
       "Nothing in this PDF could be made smaller — it holds no images that can be recomputed. That is normal for a pure text document.",
     choosePdf: "Choose a PDF",
+    dropHint: "or drag it here",
+    dropActive: "Release to add",
     quality: "Image quality",
     maxWidth: "Limit image width to (pixels)",
     keepSize: "Keep original size",
@@ -174,15 +181,13 @@ export default function PdfCompress({ lang = "de" }: Props) {
 
   return (
     <div className="pdf-compress space-y-5">
-      <label className="block text-sm">
-        <span className="mb-1 block opacity-80">{t.choosePdf}</span>
-        <input
-          type="file"
-          accept="application/pdf"
-          className={field}
-          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-        />
-      </label>
+      <FileDropZone
+        label={t.choosePdf}
+        hint={t.dropHint}
+        activeLabel={t.dropActive}
+        accept="application/pdf"
+        onFiles={(files) => setFile(files[0] ?? null)}
+      />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm">

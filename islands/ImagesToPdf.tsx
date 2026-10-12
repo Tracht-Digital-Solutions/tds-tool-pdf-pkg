@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PDFDocument } from "pdf-lib";
 import { PAGE_SIZES, downloadPdf, mm, reencode, type Lang, type PageSizeKey } from "./shared";
+import { FileDropZone } from "@tracht-digital-solutions/tds-shared/dropzone";
 
 type Orientation = "portrait" | "landscape" | "auto";
 type Fit = "fit" | "fill";
@@ -12,6 +13,8 @@ interface Strings {
   done: (n: number) => string;
   outName: string;
   chooseImages: string;
+  dropHint: string;
+  dropActive: string;
   chosen: (n: number) => string;
   pageSize: string;
   sizeFromImage: string;
@@ -42,6 +45,8 @@ const STRINGS = {
     done: (n) => `PDF mit ${n} Seite(n) erstellt.`,
     outName: "bilder.pdf",
     chooseImages: "Bilder auswählen (JPG, PNG, WebP)",
+    dropHint: "oder hierher ziehen bzw. mit Strg+V einfügen",
+    dropActive: "Loslassen zum Hinzufügen",
     chosen: (n) => `${n} Bild(er) gewählt`,
     pageSize: "Seitenformat",
     sizeFromImage: "So groß wie das Bild",
@@ -69,6 +74,8 @@ const STRINGS = {
     done: (n) => `Created a PDF with ${n} page(s).`,
     outName: "images.pdf",
     chooseImages: "Choose images (JPG, PNG, WebP)",
+    dropHint: "or drag them here, or paste with Ctrl+V",
+    dropActive: "Release to add",
     chosen: (n) => `${n} image(s) selected`,
     pageSize: "Page size",
     sizeFromImage: "Same size as the image",
@@ -206,19 +213,17 @@ export default function ImagesToPdf({ lang = "de" }: Props) {
 
   return (
     <div className="images-to-pdf space-y-5">
-      <label className="block text-sm">
-        <span className="mb-1 block opacity-80">{t.chooseImages}</span>
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          className={field}
-          onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
-        />
-        {files.length > 0 && (
-          <span className="mt-1 block text-xs opacity-60">{t.chosen(files.length)}</span>
-        )}
-      </label>
+      <FileDropZone
+        label={t.chooseImages}
+        hint={t.dropHint}
+        activeLabel={t.dropActive}
+        accept="image/*"
+        multiple
+        paste
+        onFiles={setFiles}
+      >
+        {files.length > 0 && <span className="block text-xs opacity-60">{t.chosen(files.length)}</span>}
+      </FileDropZone>
 
       {files.length > 1 && (
         <div className="space-y-2">

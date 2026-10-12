@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PDFDocument, StandardFonts, degrees, rgb } from "pdf-lib";
 import { downloadPdf, parseRange, toWinAnsi, type Lang } from "./shared";
+import { FileDropZone } from "@tracht-digital-solutions/tds-shared/dropzone";
 
 type Placement = "diagonal" | "center" | "footer" | "tile";
 
@@ -12,6 +13,8 @@ interface Strings {
   done: (n: number) => string;
   outName: string;
   choosePdf: string;
+  dropHint: string;
+  dropActive: string;
   text: string;
   textPlaceholder: string;
   size: string;
@@ -40,6 +43,8 @@ const STRINGS = {
     done: (n) => `Wasserzeichen auf ${n} Seite(n) gesetzt.`,
     outName: "wasserzeichen.pdf",
     choosePdf: "PDF auswählen",
+    dropHint: "oder hierher ziehen",
+    dropActive: "Loslassen zum Hinzufügen",
     text: "Text",
     textPlaceholder: "Entwurf",
     size: "Schriftgröße",
@@ -65,6 +70,8 @@ const STRINGS = {
     done: (n) => `Watermark applied to ${n} page(s).`,
     outName: "watermarked.pdf",
     choosePdf: "Choose a PDF",
+    dropHint: "or drag it here",
+    dropActive: "Release to add",
     text: "Text",
     textPlaceholder: "Draft",
     size: "Font size",
@@ -202,15 +209,13 @@ export default function PdfWatermark({ lang = "de" }: Props) {
 
   return (
     <div className="pdf-watermark space-y-5">
-      <label className="block text-sm">
-        <span className="mb-1 block opacity-80">{t.choosePdf}</span>
-        <input
-          type="file"
-          accept="application/pdf"
-          className={field}
-          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-        />
-      </label>
+      <FileDropZone
+        label={t.choosePdf}
+        hint={t.dropHint}
+        activeLabel={t.dropActive}
+        accept="application/pdf"
+        onFiles={(files) => setFile(files[0] ?? null)}
+      />
 
       <label className="block text-sm">
         <span className="mb-1 block opacity-80">{t.text}</span>
