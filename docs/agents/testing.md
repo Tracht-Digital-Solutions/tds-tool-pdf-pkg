@@ -2,7 +2,8 @@
 
 `npm run test:run` runs vitest. `_build.yml` gates on it between `lint:primitives` and
 `build`. These tools carry real binary logic, so the suite must gate releases.
-`test-setup.ts` shims `Blob.arrayBuffer`, which jsdom 25 lacks.
+`test-setup.ts` holds no shim today (jsdom 30 implements `Blob.arrayBuffer`); it stays as the one place
+for the next environment gap, guarded so it never overwrites a real implementation.
 
 | Suite | Covers |
 |---|---|

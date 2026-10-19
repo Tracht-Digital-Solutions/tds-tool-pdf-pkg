@@ -2,6 +2,7 @@ import { useState } from "react";
 import { PDFDocument, StandardFonts, degrees, rgb } from "pdf-lib";
 import { downloadPdf, parseRange, toWinAnsi, type Lang } from "./shared";
 import { FileDropZone } from "@tracht-digital-solutions/tds-shared/dropzone";
+import { Alert } from "@tracht-digital-solutions/tds-shared/alert";
 
 type Placement = "diagonal" | "center" | "footer" | "tile";
 
@@ -317,8 +318,8 @@ export default function PdfWatermark({ lang = "de" }: Props) {
         {busy ? t.working : t.run}
       </button>
 
-      {error && <p className="tds-alert tds-alert--danger tds-appear" role="alert">{error}</p>}
-      {status && <p className="tds-alert tds-alert--success tds-appear">{status}</p>}
+      <Alert>{error}</Alert>
+      <Alert tone="success">{status}</Alert>
 
       <p className="text-xs opacity-60">{t.note}</p>
     </div>

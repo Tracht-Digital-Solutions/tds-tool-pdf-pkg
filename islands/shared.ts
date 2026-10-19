@@ -5,7 +5,23 @@
  *
  * See the tools-site convention: labels are translated, logic is not.
  */
+import { downloadBytes } from "@tracht-digital-solutions/tds-shared/download";
+
 export type Lang = "de" | "en";
+
+/**
+ * Downloads go through tds-shared (`./download`): the link is attached, and
+ * the object URL is revoked after Firefox has read it.
+ */
+export { downloadBlob } from "@tracht-digital-solutions/tds-shared/download";
+
+/** pdf-lib bytes as a `.pdf` download (the shared helper copies the view first). */
+export function downloadPdf(bytes: Uint8Array, name: string): void {
+  downloadBytes(bytes, "application/pdf", name);
+}
+
+/** Human-readable byte size in the visitor's language (tds-shared `formatBytes`). */
+export { formatBytes } from "@tracht-digital-solutions/tds-shared/format";
 
 /**
  * Parse "1-3,5" (1-indexed) into a sorted, de-duped 0-indexed page list.
@@ -27,39 +43,6 @@ export function parseRange(spec: string, pageCount: number): number[] {
     }
   }
   return [...out].sort((a, b) => a - b);
-}
-
-/** Hand a Blob to the visitor as a download. Nothing here ever leaves the tab. */
-export function downloadBlob(blob: Blob, name: string): void {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-export function downloadPdf(bytes: Uint8Array, name: string): void {
-  // `.slice()` because pdf-lib hands back a view into a larger buffer.
-  downloadBlob(new Blob([bytes.slice()], { type: "application/pdf" }), name);
-}
-
-/** Human-readable byte size, German-style decimal comma via toLocaleString. */
-export function formatBytes(n: number, lang: Lang): string {
-  const units = ["B", "KB", "MB"];
-  let v = n;
-  let u = 0;
-  while (v >= 1024 && u < units.length - 1) {
-    v /= 1024;
-    u++;
-  }
-  const digits = u === 0 ? 0 : 1;
-  return `${v.toLocaleString(lang === "de" ? "de-DE" : "en-GB", {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  })} ${units[u]}`;
 }
 
 /** Millimetres → PDF points (72 dpi). Page geometry is authored in mm here. */

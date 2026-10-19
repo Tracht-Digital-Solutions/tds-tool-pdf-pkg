@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { downloadBlob, parseRange, formatBytes, type Lang } from "./shared";
 import { FileDropZone } from "@tracht-digital-solutions/tds-shared/dropzone";
+import { Alert } from "@tracht-digital-solutions/tds-shared/alert";
 
 type Format = "image/png" | "image/jpeg";
 
@@ -266,8 +267,8 @@ export default function PdfToImages({ lang = "de" }: Props) {
         {busy && progress ? t.working(progress.done, progress.total) : t.run}
       </button>
 
-      {error && <p className="tds-alert tds-alert--danger tds-appear" role="alert">{error}</p>}
-      {status && <p className="tds-alert tds-alert--success tds-appear">{status}</p>}
+      <Alert>{error}</Alert>
+      <Alert tone="success">{status}</Alert>
 
       {pages.length > 0 && (
         // tds-appear (tds-shared): the rendered pages fade in as the block is

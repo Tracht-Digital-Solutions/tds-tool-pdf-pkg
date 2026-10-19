@@ -54,8 +54,8 @@ describe("formatBytes", () => {
     expect(formatBytes(1536, "de")).toBe("1,5 KB");
   });
 
-  it("stops at MB rather than inventing a unit, and groups the thousands", () => {
-    expect(formatBytes(3 * 1024 * 1024 * 1024, "en")).toBe("3,072.0 MB");
-    expect(formatBytes(3 * 1024 * 1024 * 1024, "de")).toBe("3.072,0 MB");
+  it("steps up to GB (tds-shared formatBytes) instead of a four-digit MB figure", () => {
+    expect(formatBytes(3 * 1024 * 1024 * 1024, "en")).toBe("3.0 GB");
+    expect(formatBytes(3 * 1024 * 1024 * 1024, "de")).toBe("3,0 GB");
   });
 });
