@@ -86,7 +86,7 @@ export default defineToolPack({
       seo: {
         title: "PDF zu Bildern — Seiten als PNG oder JPG",
         description:
-          "PDF-Seiten in Bilder umwandeln: Auflösung und Format wählen, einzelne Seiten oder alle. Die Datei verlässt dabei zu keinem Zeitpunkt Ihren Rechner.",
+          "PDF-Seiten in Bilder umwandeln: Auflösung und Format wählen, einzelne Seiten oder alle. Die Datei verlässt dabei zu keinem Zeitpunkt den Rechner.",
       },
     }),
   ],
